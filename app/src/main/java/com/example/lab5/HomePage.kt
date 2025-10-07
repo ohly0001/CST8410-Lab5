@@ -6,14 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,8 +22,7 @@ class HomePage : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Lab5Theme {
-                Surface(modifier = Modifier.padding(40.dp))
-                {
+                Surface(modifier = Modifier.padding(40.dp)) {
                     Home()
                 }
             }
@@ -40,21 +35,23 @@ fun Home() {
     val context = LocalActivity.current
     val nextPage = Intent(context, LoginPage::class.java)
 
-    Button(
-    onClick = {
-            context?.startActivity(nextPage) //context might be null
-        },
-        colors = ButtonColors(
-            contentColor = Color.White,
-            containerColor = Color(0xFF4CAF50),
-            disabledContainerColor = Color.Unspecified,
-            disabledContentColor = Color.Unspecified
-        )
+    // Centering the button
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
-        Icon(
-            Icons.AutoMirrored.Filled.Login,
-            contentDescription = "Back"
-        )
-        Text("Login")
+        Button(
+            onClick = { context?.startActivity(nextPage) },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4CAF50),
+                contentColor = Color.White
+            ),
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Icon(Icons.AutoMirrored.Filled.Login, contentDescription = "Login")
+            Spacer(Modifier.width(8.dp))
+            Text("Login")
+        }
     }
 }

@@ -6,28 +6,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.lab5.ui.theme.Lab5Theme
-
 
 class LoginPage : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +25,7 @@ class LoginPage : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Lab5Theme {
-                Surface(modifier = Modifier.padding(40.dp))
-                {
+                Surface(modifier = Modifier.padding(40.dp)) {
                     Login()
                 }
             }
@@ -46,78 +35,85 @@ class LoginPage : ComponentActivity() {
 
 @Composable
 fun Login() {
-    val uname = remember { mutableStateOf("") }
+    val user = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
-    val context = LocalActivity.current
-    val nextPage = Intent(context, MainPage::class.java)
 
-    Column(){
-        Text("Login")
+    val context = LocalActivity.current
+    val nextPage = Intent(context, ProfilePage::class.java)
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Login", style = MaterialTheme.typography.titleLarge)
+
         TextField(
-            value = uname.value,
-            onValueChange = { v -> uname.value = v },
+            value = user.value,
+            onValueChange = { user.value = it },
             label = { Text("Username") },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
+
         TextField(
             value = pass.value,
-            onValueChange = { v -> pass.value = v },
+            onValueChange = { pass.value = it },
             label = { Text("Password") },
-            singleLine = true
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
-        Row() {
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Login Button
             Button(
                 onClick = {
-                    Repository.getInstance().uname = uname.value
+                    Repository.getInstance().user = user.value
                     context?.startActivity(nextPage)
                 },
-                enabled = uname.value.isNotBlank() && pass.value.isNotBlank(),
-                colors = ButtonColors(
-                    contentColor = Color.White,
+                enabled = user.value.isNotBlank() && pass.value.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4CAF50),
+                    contentColor = Color.White,
                     disabledContainerColor = Color(0xFFABB1AA),
                     disabledContentColor = Color.White
-                )
+                ),
+                modifier = Modifier.weight(1f)
             ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.Login,
-                    contentDescription = "Login"
-                )
-                Text("Login")
+                Icon(Icons.AutoMirrored.Filled.Login, contentDescription = "Login")
             }
+
+            // Back Button
             Button(
-                onClick = {
-                    context?.finish()
-                },
-                colors = ButtonColors(
-                    contentColor = Color.White,
+                onClick = { context?.finish() },
+                colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFF44336),
-                    disabledContainerColor = Color.Unspecified,
-                    disabledContentColor = Color.Unspecified
-                )
+                    contentColor = Color.White
+                ),
+                modifier = Modifier.weight(1f)
             ) {
-                Icon(
-                    Icons.Filled.Home,
-                    contentDescription = "Back")
-                Text("Back")
+                Icon(Icons.Filled.Home, contentDescription = "Back")
             }
+
+            // Clear Button
             Button(
                 onClick = {
-                    uname.value = ""
+                    user.value = ""
                     pass.value = ""
                 },
-                colors = ButtonColors(
-                    contentColor = Color.White,
+                enabled = user.value.isNotBlank() || pass.value.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF00BCD4),
+                    contentColor = Color.White,
                     disabledContainerColor = Color(0xFFC3C4C4),
                     disabledContentColor = Color.White
                 ),
-                enabled = uname.value.isNotBlank() || pass.value.isNotBlank()
+                modifier = Modifier.weight(1f)
             ) {
-                Icon(
-                    Icons.Filled.Delete,
-                    contentDescription = "Clear")
-                Text("Clear")
+                Icon(Icons.Filled.Delete, contentDescription = "Clear")
             }
         }
     }

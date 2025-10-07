@@ -27,13 +27,34 @@
         </activity>
         <activity
             android:name=".LoginPage"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.Lab5">
+            <intent-filter android:label="@string/app_login">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "cst8410://login” -->
+                <data android:scheme="@string/protocol"
+                    android:host="login" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".MainPage"
-            android:exported="false"
+            android:name=".ProfilePage"
+            android:exported="true"
             android:theme="@style/Theme.Lab5">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="geo" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_profile">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "cst8410://profile” -->
+                <data android:scheme="@string/protocol"
+                    android:host="profile" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
